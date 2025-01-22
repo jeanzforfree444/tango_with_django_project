@@ -109,6 +109,4 @@ def add_page(request, category_name_slug):
 
 def about(request):
 
-    context_dict = {'yourname': 'Aaron Hughes'}
-
-    return render(request, 'rango/about.html', context=context_dict)
+    return render(request, 'rango/about.html', {})
