@@ -20,7 +20,7 @@ def index(request):
 
     context_dict['pages'] = page_list
 
-    return render(request, 'rango/index.html', context = context_dict)
+    return render(request, 'rango/index.html', context=context_dict)
 
 def show_category(request, category_name_slug):
 
@@ -42,7 +42,7 @@ def show_category(request, category_name_slug):
 
         context_dict['pages'] = None
     
-    return render(request, 'rango/category.html', context = context_dict)
+    return render(request, 'rango/category.html', context=context_dict)
 
 @login_required
 def add_category(request):
@@ -106,7 +106,7 @@ def add_page(request, category_name_slug):
     
     context_dict = {'form': form, 'category': category}
 
-    return render(request, 'rango/add_page.html', context = context_dict)
+    return render(request, 'rango/add_page.html', context=context_dict)
 
 def about(request):
 
@@ -152,7 +152,7 @@ def register(request):
 
         profile_form = UserProfileForm()
 
-    return render(request, 'rango/register.html', context = {'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
+    return render(request, 'rango/register.html', context={'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
 
 def user_login(request):
 
