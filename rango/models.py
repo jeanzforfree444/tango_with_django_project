@@ -9,7 +9,6 @@ class Category(models.Model):
 
     NAME_MAX_LENGTH = 128
 
-<<<<<<< HEAD
     name = models.CharField(max_length=NAME_MAX_LENGTH, unique=True)
 
     views = models.IntegerField(default=0)
@@ -17,15 +16,6 @@ class Category(models.Model):
     likes = models.IntegerField(default=0)
 
     slug = models.SlugField(unique=True)
-=======
-    name = models.CharField(max_length = NAME_MAX_LENGTH, unique = True)
-
-    views = models.IntegerField(default = 0)
-
-    likes = models.IntegerField(default = 0)
-
-    slug = models.SlugField(unique = True)
->>>>>>> origin
 
     def save(self, *args, **kwargs):
 
@@ -47,7 +37,6 @@ class Page(models.Model):
 
     URL_MAX_LENGTH = 200
 
-<<<<<<< HEAD
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     title = models.CharField(max_length=TITLE_MAX_LENGTH)
@@ -55,15 +44,6 @@ class Page(models.Model):
     url = models.URLField()
 
     views = models.IntegerField(default=0)
-=======
-    category = models.ForeignKey(Category, on_delete = models.CASCADE)
-
-    title = models.CharField(max_length = TITLE_MAX_LENGTH)
-
-    url = models.URLField()
-
-    views = models.IntegerField(default = 0)
->>>>>>> origin
 
     def __str__(self):
 
@@ -71,11 +51,7 @@ class Page(models.Model):
     
 class UserProfile(models.Model):
 
-<<<<<<< HEAD
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-=======
-    user = models.OneToOneField(User, on_delete = models.CASCADE)
->>>>>>> origin
 
     website = models.URLField(blank=True)
 
