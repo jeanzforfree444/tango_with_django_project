@@ -23,11 +23,7 @@ def index(request):
 
     visitor_cookie_handler(request)
 
-    context_dict['visits'] = request.session['visits']
-
-    response = render(request, 'rango/index.html', context=context_dict)
-
-    return response
+    return render(request, 'rango/index.html', context=context_dict)
 
 def show_category(request, category_name_slug):
 
@@ -117,7 +113,13 @@ def add_page(request, category_name_slug):
 
 def about(request):
 
-    return render(request, 'rango/about.html')
+    context_dict = {}
+
+    visitor_cookie_handler(request)
+
+    context_dict['visits'] = request.session['visits']
+
+    return render(request, 'rango/about.html', context=context_dict)
 
 def register(request):
 
