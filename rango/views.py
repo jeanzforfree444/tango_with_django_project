@@ -1,8 +1,8 @@
-from django.contrib.auth import authenticate, login, logout
+# from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+# from django.http import HttpResponse
 from rango.models import Category, Page
-from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
+from rango.forms import CategoryForm, PageForm # UserForm, UserProfileForm
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
@@ -121,91 +121,91 @@ def about(request):
 
     return render(request, 'rango/about.html', context=context_dict)
 
-def register(request):
+# def register(request):
 
-    registered = False
+#     registered = False
 
-    if request.method == 'POST':
+#     if request.method == 'POST':
 
-        user_form = UserForm(request.POST)
+#         user_form = UserForm(request.POST)
 
-        profile_form = UserProfileForm(request.POST)
+#         profile_form = UserProfileForm(request.POST)
 
-        if user_form.is_valid() and profile_form.is_valid():
+#         if user_form.is_valid() and profile_form.is_valid():
 
-            user = user_form.save()
+#             user = user_form.save()
 
-            user.set_password(user.password)
+#             user.set_password(user.password)
 
-            user.save()
+#             user.save()
 
-            profile = profile_form.save(commit=False)
+#             profile = profile_form.save(commit=False)
 
-            profile.user = user
+#             profile.user = user
             
-            if 'picture' in request.FILES:
+#             if 'picture' in request.FILES:
 
-                profile.picture = request.FILES['picture']
+#                 profile.picture = request.FILES['picture']
 
-            profile.save()
+#             profile.save()
 
-            registered = True
+#             registered = True
         
-        else:
+#         else:
 
-            print(user_form.errors, profile_form.errors)
+#             print(user_form.errors, profile_form.errors)
     
-    else:
+#     else:
 
-        user_form = UserForm()
+#         user_form = UserForm()
 
-        profile_form = UserProfileForm()
+#         profile_form = UserProfileForm()
 
-    return render(request, 'rango/register.html', context={'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
+#     return render(request, 'rango/register.html', context={'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
 
-def user_login(request):
+# def user_login(request):
 
-    if request.method == 'POST':
+#     if request.method == 'POST':
 
-        username = request.POST.get('username')
+#         username = request.POST.get('username')
         
-        password = request.POST.get('password')
+#         password = request.POST.get('password')
         
-        user = authenticate(username=username, password=password)
+#         user = authenticate(username=username, password=password)
         
-        if user:
+#         if user:
             
-            if user.is_active:
+#             if user.is_active:
                 
-                login(request, user)
+#                 login(request, user)
                 
-                return redirect(reverse('rango:index'))
+#                 return redirect(reverse('rango:index'))
             
-            else:
+#             else:
                 
-                return HttpResponse("Your Rango account is disabled.")
+#                 return HttpResponse("Your Rango account is disabled.")
         
-        else:
+#         else:
             
-            print(f"Invalid login details: {username}, {password}")
+#             print(f"Invalid login details: {username}, {password}")
             
-            return HttpResponse("Invalid login details supplied.")
+#             return HttpResponse("Invalid login details supplied.")
         
-    else:
+#     else:
         
-        return render(request, 'rango/login.html')
+#         return render(request, 'rango/login.html')
 
 @login_required
 def restricted(request):
 
     return render(request, 'rango/restricted.html')
 
-@login_required
-def user_logout(request):
+# @login_required
+# def user_logout(request):
     
-    logout(request)
+#     logout(request)
 
-    return redirect(reverse('rango:index'))
+#     return redirect(reverse('rango:index'))
 
 def get_server_side_cookie(request, cookie, default_val=None):
 
