@@ -1,12 +1,13 @@
 # from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 # from django.http import HttpResponse
-from rango.models import Category, Page
-from rango.forms import CategoryForm, PageForm # UserForm, UserProfileForm
+from rango.models import Category, Page, UserProfile
+from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from rango.bing_search import run_query
+from django.contrib.auth.models import User
 
 def index(request):
 
@@ -34,7 +35,7 @@ def show_category(request, category_name_slug):
 
         category = Category.objects.get(slug=category_name_slug)
 
-        pages = Page.objects.filter(category=category)
+        pages = Page.objects.filter(category=category).order_by('-views')
 
         context_dict['pages'] = pages
 
@@ -45,6 +46,18 @@ def show_category(request, category_name_slug):
         context_dict['category'] = None
 
         context_dict['pages'] = None
+    
+    if request.method == 'POST':
+
+        if request.method == 'POST':
+
+            query = request.POST['query'].strip()
+
+            if query:
+
+                context_dict['result_list'] = run_query(query)
+
+                context_dict['query'] = query
     
     return render(request, 'rango/category.html', context=context_dict)
 
@@ -238,24 +251,115 @@ def visitor_cookie_handler(request):
     
     request.session['visits'] = visits
 
-def search(request):
+# def search(request):
 
-    result_list = []
+#     result_list = []
 
-    context_dict = {}
+#     context_dict = {}
 
-    query = ''
+#     query = ''
+
+#     if request.method == 'POST':
+
+#         query = request.POST['query'].strip()
+
+#         context_dict['query'] = query
+
+#         if query:
+
+#             result_list = run_query(query)
+
+#             context_dict['result_list'] = result_list
+
+#     return render(request, 'rango/search.html', context=context_dict)
+
+def goto_url(request):
+
+    page_id = None
+
+    if request.method == 'GET':
+
+        page_id = request.GET.get('page_id')
+    
+        try:
+
+            page = Page.objects.get(id=page_id)
+        
+        except Page.DoesNotExist:
+
+            return redirect(reverse('rango:index'))
+        
+        page.views = page.views + 1
+
+        page.save()
+
+        return redirect(page.url)
+
+@login_required
+def register_profile(request):
+
+    form = UserProfileForm()
 
     if request.method == 'POST':
 
-        query = request.POST['query'].strip()
+        form = UserProfileForm(request.POST, request.FILES)
 
-        context_dict['query'] = query
+        if form.is_valid():
 
-        if query:
+            user_profile = form.save(commit=False)
 
-            result_list = run_query(query)
+            user_profile.user = request.user
 
-            context_dict['result_list'] = result_list
+            user_profile.save()
 
-    return render(request, 'rango/search.html', context=context_dict)
+            return redirect(reverse('rango:index'))
+        
+        else:
+
+            print(form.errors)
+    
+    context_dict = {'form': form}
+
+    return render(request, 'rango/profile_registration.html', context=context_dict)
+
+def profile(request, username):
+
+    try:
+
+        try:
+
+            user = User.objects.get(username=username)
+        
+        except User.DoesNotExist:
+
+            user = None
+        
+        user_profile = UserProfile.objects.get_or_create(user=user)[0]
+
+        form = UserProfileForm({'website': user_profile.website, 'picture': user_profile.picture})
+
+    except TypeError:
+
+        return redirect(reverse('rango:index'))
+    
+    if request.method == 'GET':
+
+        context_dict = {'user_profile': user_profile, 'selected_user': user, 'form': form}
+
+        return render(request, 'rango/profile.html', context=context_dict)
+    
+    if request.method == 'POST':
+
+        form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
+
+        if form.is_valid():
+
+            form.save(commit=True)
+
+        else:
+
+            print(form.errors)
+        
+        context_dict = {'user_profile': user_profile, 'selected_user': user, 'form': form}
+
+        return render(request, 'rango/profile.html', context=context_dict)
