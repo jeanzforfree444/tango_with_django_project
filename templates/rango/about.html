@@ -20,7 +20,19 @@
         </div>
     </div>
 
-    <p>Visits: {{ visits }}</p>
+    <p>Visits: {{ visits }}</p><br />
+
+    <button class="btn btn-primary" onclick="alert('You clicked the button using inline JavaScript.');">
+        Click me - I run on vanilla JavaScript!
+    </button>
+
+    <button class="btn btn-primary" id="about-btn">
+        Click me - I'm using JQuery!
+    </button><br /><br />
+
+    <p>This is some text for the JQuery example.</p><br />
+
+    <div id="msg">Hello! I'm a further example for JQuery testing.</div><br />
 
     <img src="{% static 'images/rango.jpg' %}" alt="Picture of Rango" style="width: 500px" /><br />
     <img src="{{ MEDIA_URL }}cat.jpg" alt="Picture of a Cat." style="width: 500px" />
