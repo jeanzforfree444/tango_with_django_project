@@ -18,6 +18,14 @@ def populate():
         {'title':'How to Tango with Django', 'url':'http://www.tangowithdjango.com/', 'views': 22}
     ]
 
+    perl_pages = []
+
+    php_pages = []
+
+    postscript_pages = []
+
+    programming_pages = []
+
     other_pages = [
         {'title':'Bottle', 'url':'http://bottlepy.org/docs/dev/', 'views': 18},
         {'title':'Flask', 'url':'http://flask.pocoo.org', 'views': 14}
@@ -25,6 +33,10 @@ def populate():
 
     cats = {'Python': {'pages': python_pages, 'views': 128, 'likes': 64},
             'Django': {'pages': django_pages, 'views': 64, 'likes': 32},
+            'Perl': {'pages': perl_pages, 'views': 0, 'likes': 0},
+            'PHP': {'pages': php_pages, 'views': 0, 'likes': 0},
+            'PostScript': {'pages': postscript_pages, 'views': 0, 'likes': 0},
+            'Programming': {'pages': programming_pages, 'views': 0, 'likes': 0},
             'Other Frameworks': {'pages': other_pages, 'views': 32, 'likes': 16}
     }
 
