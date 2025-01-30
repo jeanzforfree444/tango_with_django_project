@@ -10,6 +10,7 @@ from rango.bing_search import run_query
 from django.views import View
 from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 class IndexView(View):
 
@@ -196,6 +197,8 @@ class GotoView(View):
             return redirect(reverse('rango:index'))
 
         selected_page.views = selected_page.views + 1
+
+        selected_page.last_visit = timezone.now()
 
         selected_page.save()
 

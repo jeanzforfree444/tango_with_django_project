@@ -1,7 +1,7 @@
 from django.db import models
-from django.contrib import admin
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 # Create your models here.
 
@@ -44,6 +44,14 @@ class Page(models.Model):
     url = models.URLField()
 
     views = models.IntegerField(default=0)
+
+    last_visit = models.DateTimeField(blank=True)
+
+    def save(self, *args, **kwargs):
+
+        self.last_visit = timezone.now()
+
+        super(Page, self).save(*args, **kwargs)
 
     def __str__(self):
 
